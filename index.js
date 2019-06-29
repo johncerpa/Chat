@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const Message = require('./MessageModel').default;
 
 const dev = app.get('env') !== 'production';
+require('dotenv').config()
 
 if (!dev) {
   app.disable('x-powered-by');

@@ -23,7 +23,7 @@ if (dev) {
   app.use(morgan('dev'));
 }
 
-server.listen(process.env.PORT || 8000);
+server.listen(process.env.PORT);
 
 io.on('connection', client => {
   // Receives client's message then sends to all except the sender
@@ -33,9 +33,7 @@ io.on('connection', client => {
 });
 
 // Database handling
-const DB_PWD = process.env.DB_PWD;
-const URI = `mongodb+srv://admin:${DB_PWD}@cluster0-08xi0.mongodb.net/chat?retryWrites=true&w=majority`;
-mongoose.connect(URI, {useNewUrlParser: true});
+mongoose.connect(process.env.DBURI, {useNewUrlParser: true});
 mongoose.set('useCreateIndex', true);
 
 app.use(express.json());

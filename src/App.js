@@ -8,8 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 import Fade from 'react-reveal/Fade';
 import openSocket from 'socket.io-client';
 
-const PORT = process.env.PORT || 8000;
-let socket = openSocket(`http://localhost:${PORT}`);
+let socket = openSocket('');
 
 function App() {
 
@@ -31,7 +30,7 @@ function App() {
       socket.emit('message', {name, message: msg});
       
       // Save message in database
-      fetch(`http://localhost:${PORT}/messages`,
+      fetch(`/messages`,
         {
           method: 'POST',
           mode: 'cors',
@@ -58,7 +57,7 @@ function App() {
     setTimeout(() => setVariant(''), 4000);
 
     const getMessages = async () => {
-      const fetchResponse = await fetch(`http://localhost:${PORT}/messages`);
+      const fetchResponse = await fetch(`/messages`);
       const msgs = await fetchResponse.json();
       setMessages([...msgs]);
     }

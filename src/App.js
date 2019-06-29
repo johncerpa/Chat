@@ -8,7 +8,8 @@ import Alert from 'react-bootstrap/Alert';
 import Fade from 'react-reveal/Fade';
 import openSocket from 'socket.io-client';
 
-let socket = openSocket(`http://localhost:${process.env.PORT || 8000}`);
+const PORT = process.env.PORT || 8000;
+let socket = openSocket(`http://localhost:${PORT}`);
 
 function App() {
 
@@ -19,11 +20,29 @@ function App() {
 
   const handleNameChange = name => setName(name);
 
-  const handleSend = (msg)  => {
+  const handleSend = async (msg)  => {
     if (name !== '') {
-      setMessages([...messages, {name, message: msg}]);
-      window.scrollTo({left: 0, top: document.body.scrollHeight, behavior: 'smooth'});
+      
+      const newMessage = {name, message: msg};
+
+      setMessages([...messages, newMessage]);
+
+      // Send message to the other sockets
       socket.emit('message', {name, message: msg});
+      
+      // Save message in database
+      fetch(`http://localhost:${PORT}/messages`,
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({name: name, message: msg})
+        }
+      );
+      
+      // Scroll to the bottom of the page
+      window.scrollTo({left: 0, top: document.body.scrollHeight, behavior: 'smooth'});
+
     } else {
       setTimeout(() => setVariant(''), 4000);
       setVariant('warning');
@@ -37,13 +56,21 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => setVariant(''), 4000);
+
+    const getMessages = async () => {
+      const fetchResponse = await fetch(`http://localhost:${PORT}/messages`);
+      const msgs = await fetchResponse.json();
+      setMessages([...msgs]);
+    }
+
+    getMessages();
+    
   }, []);
 
   
 
   return (
     <div className="App">
-
       {variant !== ''
         ? 
           <Alert className="fixed-top" variant={variant}>
@@ -61,7 +88,6 @@ function App() {
         
         <MessageInput handleSend={handleSend} />
       </div>
-      
     </div> 
   );
 }

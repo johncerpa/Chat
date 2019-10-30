@@ -36,7 +36,6 @@ io.on('connection', client => {
 });
 
 // Database handling
-// production mongoose.connect(process.env.DBURI, {useNewUrlParser: true});
 mongoose.connect(process.env.DBURI, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 

@@ -37,13 +37,11 @@ function App() {
 
       if (msg.includes('#question')) {
         const question = msg.slice(msg.indexOf('#') + 9, msg.length);
-        console.log(
-          'Sending question...',
-          question,
-          `to: ${process.env.BOT_URI}`
-        );
 
-        fetch(process.env.BOT_URI, {
+        const BOT_URI =
+          'https://qnauninorte.azurewebsites.net/qnamaker/knowledgebases/30eabc81-7806-4433-a60b-7f9710dc4880/generateAnswer';
+
+        fetch(BOT_URI, {
           method: 'POST',
           mode: 'cors',
           headers: {

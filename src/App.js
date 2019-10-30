@@ -37,6 +37,7 @@ function App() {
 
       if (msg.includes('#question')) {
         const question = msg.slice(msg.indexOf('#') + 9, msg.length);
+        console.log('Sending question...', question);
 
         fetch(process.env.BOT_URI, {
           method: 'POST',
@@ -49,6 +50,7 @@ function App() {
         })
           .then(botResponse => botResponse.json())
           .then(parsedRes => {
+            console.log('Response: ', parsedRes);
             const answer = parsedRes.answers[0].answer;
             const ansObj = { name: 'Bot', message: answer };
 

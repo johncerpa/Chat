@@ -37,7 +37,11 @@ function App() {
 
       if (msg.includes('#question')) {
         const question = msg.slice(msg.indexOf('#') + 9, msg.length);
-        console.log('Sending question...', question);
+        console.log(
+          'Sending question...',
+          question,
+          `to: ${process.env.BOT_URI}`
+        );
 
         fetch(process.env.BOT_URI, {
           method: 'POST',

@@ -63,10 +63,10 @@ function App() {
           });
       }
 
-      // Scroll to the bottom of the page
+      // Scroll to the bottom of the chat
       window.scrollTo({
         left: 0,
-        top: document.body.scrollHeight,
+        top: document.querySelector('#thechat').scrollHeight,
         behavior: 'smooth'
       });
     } else {
@@ -102,7 +102,7 @@ function App() {
         <NameInput handleNameChange={handleNameChange} />
       )}
 
-      <div className="container-fluid overflow-auto">
+      <div className="container-fluid overflow-auto" id="thechat">
         {messages.map(({ name, message }, index) => (
           <Message key={index} name={name} message={message} />
         ))}
